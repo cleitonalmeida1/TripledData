@@ -1,41 +1,36 @@
 #include "TData.h"
-#include "Pessoa.h"
+#include "Carro.h"
 
-int main(int argc, char** argv) {
+using namespace std;
 
-	Pessoa p;
-	Animal animal;
-	Animal *animal2 = new Animal();
-	animal.setIdade(10);
-	animal2->setIdade(20);
-	TData<Pessoa> dataPessoa;
+int main() {
+	//duas saídas
 
+	Carro carro;
+	carro.setLocalizacao(100);
+	carro.getEmergencia()->setTelefoneHospital(123456);
+	TData<Carro> dataCarro(carro);
 
-	p.setAnimal(animal);
-	p.setAnimal2(animal2);
-	p.setIdade(100);
-	dataPessoa.setData(p);
+	TData<int> a(4);
+	cout << a << endl;
+	a = 8;
+	cout << a << endl;
+	a = 9;
+	cout << a << endl;
+	a = 1 + 9;
+	cout << a << endl;
 
-	dataPessoa.getData().setIdade(200);
+	dataCarro.getDataObject()->setLocalizacao(4000);
+	cout << dataCarro.getDataObject()->getLocalizacao() << endl;
 
-	cout << "Idade da pessoa = " << dataPessoa.getData().getIdade() << endl;
-	cout << "Idade do animal = " << dataPessoa.getData().getAnimal().getIdade()
+	dataCarro.injectFault();
+
+	cout << "Localizacao original: " << dataCarro.getData().getLocalizacao()
 			<< endl;
-	cout << "Idade do animal2 = "
-			<< dataPessoa.getData().getAnimal2()->getIdade() << endl;
+	cout << "Telefone do Hospital original: "
+			<< dataCarro.getData().getEmergencia()->getTelefoneHospital()
+			<< endl;
 
-	dataPessoa.printPessoa();
+	dataCarro.print();
 
-	//var.setData(88);
-
-	//var = 94 + 6;
-
-	//var.injectFault();
-
-	//cout << "var = " << var << endl;
-
-	//var.print();
-
-	return 0;
 }
-

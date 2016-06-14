@@ -1,38 +1,34 @@
-#include <cstring>
-#include <cstdio>
 #include <iostream>
-
+#include "Emergencia.h"
 using namespace std;
 
 template<class T>
 class TData {
 public:
 
-	TData() {
+	TData(T t) {
+		setData(t);
+	}
+
+	TData(T *t) {
+		setData(t);
 	}
 
 	T getData();
 
-	void setData(T data);
-	void setData(T *data);
-
-	void print();
-
-	void printPessoa();
+	T* getDataObject();
 
 	void injectFault();
 
-	void injectPessoa();
-	void injectAnimal();
-	void injectAnimal2();
+	void setData(T data);
+	void setData(T *data);
 
 	TData& operator=(T data) {
 		setData(data);
 		return *this;
 	}
-
-	TData& operator=(TData& rhs) {
-		setData(rhs.getData());
+	TData& operator=(TData& obj) {
+		setData(obj.getData());
 		return *this;
 	}
 
@@ -40,9 +36,25 @@ public:
 		return getData();
 	}
 
+	void print() {
+		cout << "localizacao 1: " << d1.getLocalizacao() << endl;
+		cout << "localizacao 2: " << d2.getLocalizacao() << endl;
+		cout << "localizacao 3: " << d3.getLocalizacao() << endl;
+
+		cout << "Telefone do Hospital 1: "
+				<< d1.getEmergencia()->getTelefoneHospital() << endl;
+		cout << "Telefone do Hospital 2: "
+				<< d2.getEmergencia()->getTelefoneHospital() << endl;
+		cout << "Telefone do Hospital 3: "
+				<< d3.getEmergencia()->getTelefoneHospital() << endl;
+	}
+
 private:
 
-	T d1, d2, d3;
+	T d1;
+	T d2;
+	T d3;
+	T dataObject;
 
 	T getByVotting();
 };
@@ -67,57 +79,39 @@ T TData<T>::getByVotting() {
 
 	return d1;
 }
-
-template<class T>
+template<typename T>
 T TData<T>::getData() {
 	return getByVotting();
 }
 
 template<class T>
+T* TData<T>::getDataObject() {
+	d1 = dataObject;
+	d2 = dataObject;
+	d3 = dataObject;
+	dataObject = getByVotting();
+	return &dataObject;
+}
+
+template<typename T>
 void TData<T>::setData(T data) {
 	d1 = data;
 	d2 = data;
 	d3 = data;
+	dataObject = data;
 }
-
-template<class T>
+template<typename T>
 void TData<T>::setData(T *data) {
 	d1 = *data;
 	d2 = *data;
 	d3 = *data;
-}
-
-template<class T>
-void TData<T>::print() {
-	cout << "d1 = " << d1 << endl;
-	cout << "d2 = " << d2 << endl;
-	cout << "d3 = " << d3 << endl;
-}
-
-template<class T>
-void TData<T>::printPessoa() {
-	cout << "d1 = " << d1.getIdade() << endl;
-	cout << "d2 = " << d2.getIdade() << endl;
-	cout << "d3 = " << d3.getIdade() << endl;
+	dataObject = *data;
 }
 
 template<class T>
 void TData<T>::injectFault() {
-	d1 = 66;
-}
-
-template<class T>
-void TData<T>::injectPessoa() {
-	d1.setIdade(12);
-}
-
-template<class T>
-void TData<T>::injectAnimal() {
-	d1.getAnimal().setIdade(2);
-}
-
-template<class T>
-void TData<T>::injectAnimal2() {
-	d2.setAnimal2(NULL);
+	Emergencia* e = new Emergencia();
+	d1.setEmergencia(e);
+	d1.setLocalizacao(200);
 }
 
